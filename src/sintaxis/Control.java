@@ -57,8 +57,8 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         "1000", "-130,827,838", "-131,827,838", "-28,812,845", "1000", "812,845,-42,838,-136,846",
         "-127,838,-136", "1000", "-27,827,847", "1000", "819,827,2004"
     };  
-    
-
+    //sdlfudskufhkdshfusd
+  
     //Variables de Ambito
     LinkedList<Integer> pilaAmbito;
     LinkedList<Ambito> tablaAmbito;
