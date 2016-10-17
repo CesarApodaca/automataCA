@@ -58,7 +58,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         "-127,838,-136", "1000", "-27,827,847", "1000", "819,827,2004"
     };  
     
-
+    int entero =0;
     //Variables de Ambito
     LinkedList<Integer> pilaAmbito;
     LinkedList<Ambito> tablaAmbito;
