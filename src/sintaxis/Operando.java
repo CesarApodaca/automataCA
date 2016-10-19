@@ -10,11 +10,18 @@ package sintaxis;
  * @author CesarIvan
  */
 public class Operando {
-    String id, tipo;
+    String id, tipo, clase;
     
     public Operando(String id, String tipo)
     {
         this.id=id;
         this.tipo=tipo;
     }
+    
+    public Operando(String id, String tipo, String clase){
+    this.id=id;
+    this.tipo=tipo;
+    this.clase=clase;
+    }
+    
 }

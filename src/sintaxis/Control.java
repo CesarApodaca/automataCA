@@ -57,8 +57,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         "1000", "-130,827,2019,838", "-131,827,2020,838", "-28,812,2012,845", "1000", "812,2012,845,-42,838,-136,846",
         "-127,838,-136", "1000", "-27,827,847", "1000", "819,827,2004"
     }; 
-    //sdlfudskufhkdshfusd
-  
+
     //Variables de Ambito
     LinkedList<Integer> pilaAmbito;
     LinkedList<Ambito> tablaAmbito;
@@ -78,6 +77,11 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     LinkedList<Operando> pilaOperando;
     LinkedList<String> pilaTemporal;
     matricesDatos mDatos;
+    
+    LinkedList<Ambito> auxA;
+    int esperandoReturn, valorFor;
+    boolean dentroFor;
+    String tipoCase, tipoFor;
     
     
     
@@ -104,6 +108,13 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         pilaOperando = new LinkedList();
         mDatos = new matricesDatos();
         pilaTemporal = new LinkedList();
+        
+        auxA= new LinkedList<Ambito>();
+        esperandoReturn=0;
+        valorFor=0;
+        dentroFor=false;
+        tipoCase="";
+        tipoFor="";
         
         //cochinero
         this.areaTexto = areaTexto;
@@ -443,6 +454,38 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                pilaOperando.removeFirst();
                                pilaOperando.addFirst(aux1);
                         break;
+                    case 2006: Tipo(new String [] {"integer"},636);
+                                break;
+                    case 2007: Tipo(new String [] {"boolean"},637);
+                                break;
+                    case 2008: Clase(new String [] {"arr"}, 638);
+                                break;
+                    case 2009: Clase(new String [] {"var", "par", "arr"}, 639);
+                                break;
+                    case 2010: Clase(new String [] {"fun", "proc"}, 640);
+                                break;
+                    case 2011: revisaCase(641);
+                                break;
+                    case 2012: Tipo(new String [] {tipoCase},642);
+                                break;
+                    case 2013: revisaReturn(643);
+                                break;
+                    case 2014: Parametros(644);
+                                break;
+                    case 2015: totalParametros(645);
+                                break;
+                    case 2016: Dimensiones(646);
+                                break;
+                    case 2017: dentroFor=true;
+                                break;
+                    case 2018: revisaFor(647);
+                                break;
+                    case 2019: revisaTo(648);
+                                break;
+                    case 2020: revisadownTo(649);
+                                break;
+                    case 2021: TotalDimensiones(650);
+                                break;
                 }
                 produccion.removeFirst();
             }
@@ -513,7 +556,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     
                     
                     System.out.println("linea"+ t.linea +" token" + t.token );
-                    ListaError.add(new Error(645, lin, t.lexema, "Se esperaba " + convertirProd(produccion.get(0)), "Sintaxis"));
+                    ListaError.add(new Error(700, lin, t.lexema, "Se esperaba " + convertirProd(produccion.get(0)), "Sintaxis"));
                     contErr++;
                     break;
                 }
@@ -550,19 +593,19 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 aux = new Operando(pilaOperando.getFirst().id,pilaOperando.getFirst().tipo);
                 break;
             case "+=":
-                aux = new Operando("temp",mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)));
+                aux = new Operando("temp",mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "-=":
-                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)));
+                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "*=":
-                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)));
+                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "/=":
-                aux = new Operando("temp",mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)));
+                aux = new Operando("temp",mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "%=":
-                aux = new Operando("temp",mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)));
+                aux = new Operando("temp",mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
         }
         return aux;
@@ -606,7 +649,191 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     }
     
     
- 
+     public boolean Tipo(String ar [], int nError){
+        boolean temp=true;
+        String tipos = ""; 
+        for(int i=0;i<ar.length;i++){
+            tipos+=ar[i];
+            if(pilaOperando.getFirst().tipo.equals(ar[i])){
+                temp=false;
+            }
+        }
+        if(temp)
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba una expresion de tipo " + tipos, "Semantica 2"));
+        pilaOperando.removeFirst();
+        return temp;
+    }
+    
+        public boolean Clase(String ar [], int nError){
+        boolean temp=true;
+        String clases = ""; 
+        for(int i=0;i<ar.length;i++){
+            clases+=ar[i];
+            if(pilaOperando.getFirst().clase.equals(ar[i])){
+                temp=false;
+            }
+        }
+        if(temp)
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba un id de clase " + clases, "Semantica 2"));
+        return temp;
+    }
+     
+        
+    public boolean Clase(String ar [], int nError, Operando op ){
+        boolean temp=true;
+        String clases = ""; 
+        for(int i=0;i<ar.length;i++){
+            clases+=ar[i];
+            if(op.clase.equals(ar[i])){
+                temp=false;
+            }
+        }
+        if(temp)
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,op.id,"Se esperaba un id de clase " + clases, "Semantica 2"));
+        return temp;
+    }
+    
+        public void Parametros(int nError){
+        contPar++;
+        if(auxA.getFirst()!=null){
+            if(contPar<=auxA.getFirst().npar){
+                Ambito nuevo = buscarParametro(auxA.getFirst().lexema,contPar,auxA.getFirst().ambito+1);
+                if(!nuevo.tipo.equals(pilaOperando.getFirst().tipo)){
+                    ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"El parametro " + contPar + "debe ser de tipo " + nuevo.tipo, "Semantica 2"));
+                }
+            }
+            else{
+                ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"La funcion o procedimiento solo tiene " + auxA.getFirst().npar + "parametros", "Semantica 2"));
+            }
+        }
+    }
+        
+            public void totalParametros(int nError){
+        if(auxA.getFirst().npar!=contPar){
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Se esperaban " + auxA.getFirst().npar + "parametros", "Semantica 2"));
+        }
+        auxA.removeFirst();
+        contPar=0;
+    }
+        
+            public Ambito buscarParametro(String tpar, int npar, int ambito){
+        Ambito aux = null;
+        for(int i=0;i<tablaAmbito.size();i++){
+            if(tablaAmbito.get(i).tparr.equals(tpar) && tablaAmbito.get(i).npar==npar && tablaAmbito.get(i).ambito==ambito){
+                aux=tablaAmbito.get(i);
+            }
+        }
+        return aux;
+    }
+    
+        public void Dimensiones(int nError){
+        contDimension++;
+        if(contDimension<=auxA.getFirst().darr){
+            Operando nuevo = pilaOperando.getFirst();
+            if(!Tipo(new String [] {"integer"}, nError)){
+                if(nuevo.clase==null){
+                    int valor=Integer.parseInt(nuevo.id);
+                    int maximo=calcularTDimension();
+                    if(valor>=maximo||valor<=-1){
+                        ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"El valor de la dimension no puede ser mayor que " + maximo + "ni menor que 0", "Semantica 2"));
+                    }
+                }
+            }
+        }
+        else {
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"El arreglo solo tiene " + auxA.getFirst().darr + "dimensiones", "Semantica 2"));
+        }
+    }
+        
+            public int calcularTDimension(){
+        int tAux=0,dAux=0;
+        String tArr=auxA.getFirst().tarr;
+        String valor="";
+        for(int i=0;i<tArr.length();i++){
+            if(tArr.charAt(i)==','){
+                dAux++;
+                if(dAux==contDimension)
+                    tAux=Integer.parseInt(valor);
+                else
+                    valor="";
+            }
+            else
+                valor+=tArr.charAt(i);
+        }
+        dAux++;
+        if(dAux==contDimension)
+            tAux=Integer.parseInt(valor);
+        return tAux;
+    }
+     
+        public void revisaCase(int nError){
+        tipoCase=pilaOperando.getFirst().tipo;
+        if(Tipo(new String []{"integer","char","cadena"},nError)){
+            tipoCase="";
+        }
+    }
+    
+    public void revisaReturn(int nError){
+        if(auxA.getFirst()!=null && auxA.getFirst().clase.equals("fun")){
+            Tipo(new String [] {auxA.getFirst().tipo},nError);
+            esperandoReturn--;
+            auxA.removeFirst();
+        }
+        else{
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Solo las funciones pueden tener return", "Semantica 2"));
+        }
+    }        
+       
+        public void revisadownTo(int nError){
+        Operando valorTo= pilaOperando.getFirst();
+        if(!Tipo(new String []{"integer"},nError)){
+            if(valorTo.clase==null){
+                int valor=Integer.parseInt(valorTo.id);
+                if(valor>=valorFor){
+                    ListaError.add(new Error(nError,ListaToken.getFirst().linea,"downto","El valor debe ser menor que al iniciar el for", "Semantica 2"));
+                }
+            }
+        }
+        valorFor=-100;
+    }
+    
+    public void revisaFor(int nError){
+        if(tipoFor.equals("integer")){
+            if(valorFor==-100){
+                ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Se esperaba una asignacion al iniciar el for", "Semantica 2"));
+                if(!pilaOperando.isEmpty()){
+                    pilaOperando.clear();
+                }
+            }
+        }
+        else{
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,"for","Se esperaba una expresión integer al iniciar el for", "Semantica 2"));
+        }
+        dentroFor=false;
+        tipoFor="";
+    }
+    
+        public void TotalDimensiones(int nError){
+        if(auxA.getFirst().darr!=contDimension){
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Se esperaba " + auxA.getFirst().darr + "dimensiones", "Semantica 2"));
+        }
+        auxA.removeFirst();
+        contDimension=0;
+    }
+    
+    public void revisaTo(int nError){
+        Operando valorTo= pilaOperando.getFirst();
+        if(!Tipo(new String []{"integer"},nError)){
+            if(valorTo.clase==null){
+                int valor=Integer.parseInt(valorTo.id);
+                if(valor<=valorFor){
+                    ListaError.add(new Error(nError,ListaToken.getFirst().linea,"to","El valor debe ser mayor que al iniciar el for", "Semantica 2"));
+                }
+            }
+        }
+        valorFor=-100;
+    }
+    
     
     
     public void metoditoAmbito(Token tokensito)
@@ -1244,6 +1471,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
          ErroresSistema[37] = new Error(630,"Se esperaba to o downto","Sintaxis");
          ErroresSistema[38] = new Error(631,"Se esperaba una constante,true,false o else","Sintaxis");
          ErroresSistema[39] = new Error(632,"Error","Sintaxis");
+         ErroresSistema[40] = new Error(700,"Error","Sintaxis");
          
          listaPalabrasR [0] = new palabraReservada(-100,"true"); 
          listaPalabrasR [1] = new palabraReservada(-101,"false"); 
@@ -1499,6 +1727,12 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         contDimension=0;
         tamArreglo = "";
         mDatos = new matricesDatos();
+        auxA= new LinkedList<Ambito>();
+        esperandoReturn=0;
+        valorFor=0;
+        dentroFor=false;
+        tipoCase="";
+        tipoFor="";
         pilaTemporal.clear();
     }
     
