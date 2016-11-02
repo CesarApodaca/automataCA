@@ -10,7 +10,8 @@ package sintaxis;
  * @author CesarIvan
  */
 public class Operando {
-    String id, tipo, clase;
+    String id, tipo, clase="";
+    
     
     public Operando(String id, String tipo)
     {

@@ -400,6 +400,12 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         sintaxis();
         tablas();
         noToken=true;
+        
+        
+        /* prueba */
+        
+        
+        
     }
     
     
@@ -447,7 +453,16 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                
                                if(aux1.tipo.equals("variant"))
                                {
-                                   ListaError.add(new Error(647, ListaToken.getFirst().linea, pilaOperando.get(1).id, "Error de ejecucion: No puedes hacer una operacion de "+ pilaOperadores.get(0) + " con " + pilaOperando.get(1).tipo + " y un " + pilaOperando.get(0).tipo , "Semantica"));
+                                   String lexemaL ="";
+                                   if(pilaOperando.get(0).id.equals("temp"))
+                                   {
+                                       lexemaL = pilaOperando.get(1).id;
+                                   }
+                                   else
+                                       lexemaL = pilaOperando.get(0).id;
+                                   
+                                   
+                                   ListaError.add(new Error(647, ListaToken.getFirst().linea, lexemaL, "Error de ejecucion: No puedes hacer una operacion de "+ pilaOperadores.get(0) + " con " + pilaOperando.get(1).tipo + " y un " + pilaOperando.get(0).tipo , "Semantica"));
                                }
                                pilaOperadores.removeFirst();
                                pilaOperando.removeFirst();
@@ -493,45 +508,49 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             {
                 if(produccion.get(0)>0 && ListaToken.get(0).token<0)
             {
-                int xxx = ListaToken.get(0).token;
-                //System.out.println(""+xxx);
-                int columnaX = calcularColumnaS(ListaToken.get(0).token);
-                //System.out.println(""+columnaX);
-                int filaX = produccion.getFirst()-800;
-               // if(ListaToken.get(0).token )
-                p = Integer.parseInt(sheet.getCell(columnaX, filaX).getContents());
-                if(p >= 800)
-                {
-                    if(p == 1000)
+                if(ListaToken.getFirst().token==-41){
+                    ListaToken.removeFirst();
+                }else{
+                    int xxx = ListaToken.get(0).token;
+                    //System.out.println(""+xxx);
+                    int columnaX = calcularColumnaS(ListaToken.get(0).token);
+                    //System.out.println(""+columnaX);
+                    int filaX = produccion.getFirst()-800;
+                   // if(ListaToken.get(0).token )
+                    p = Integer.parseInt(sheet.getCell(columnaX, filaX).getContents());
+                    if(p >= 800)
                     {
-                        produccion.removeFirst();
+                        if(p == 1000)
+                        {
+                            produccion.removeFirst();
+                        }
+                        else
+                        {
+                            produccion.removeFirst();
+                            String [] prod = producciones[p-800].split(",");
+                            for(int k=prod.length-1;k>=0;k--)
+                            {
+                                produccion.push(Integer.parseInt(prod[k]));
+                 //               System.out.print(produccion);
+                            }
+
+                        }
                     }
                     else
                     {
-                        produccion.removeFirst();
-                        String [] prod = producciones[p-800].split(",");
-                        for(int k=prod.length-1;k>=0;k--)
+                        if(p >= 600)
                         {
-                            produccion.push(Integer.parseInt(prod[k]));
-             //               System.out.print(produccion);
+                            int lin=0;
+                            Token t = ListaToken.get(0);
+                            lin= t.linea;
+                       //     System.out.println("hola");
+
+                            ListaError.add(new Error(p, lin, t.lexema, buscarError(p).Descrip, "Sintaxis"));
+                     //       System.out.println("error: "+p);
+                            contErr++;
+                            ListaToken.remove(0);
+
                         }
-                        
-                    }
-                }
-                else
-                {
-                    if(p >= 600)
-                    {
-                        int lin=0;
-                        Token t = ListaToken.get(0);
-                        lin= t.linea;
-                   //     System.out.println("hola");
-                      
-                        ListaError.add(new Error(p, lin, t.lexema, buscarError(p).Descrip, "Sintaxis"));
-                 //       System.out.println("error: "+p);
-                        contErr++;
-                        ListaToken.remove(0);
-                        
                     }
                 }
             }
@@ -550,15 +569,20 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 }
                 else
                 {
-                    int lin=0;
-                    Token t = ListaToken.remove(0);
-                    lin= t.linea;
+                    if(ListaToken.getFirst().token==-41){
+                        ListaToken.removeFirst();
+                    }else{
+                        int lin=0;
+                        Token t = ListaToken.remove(0);
+                        lin= t.linea;
+
+
+                        System.out.println("linea"+ t.linea +" token" + t.token );
+                        ListaError.add(new Error(700, lin, t.lexema, "Se esperaba " + convertirProd(produccion.get(0)), "Sintaxis"));
+                        contErr++;
+                        break;
+                    }
                     
-                    
-                    System.out.println("linea"+ t.linea +" token" + t.token );
-                    ListaError.add(new Error(700, lin, t.lexema, "Se esperaba " + convertirProd(produccion.get(0)), "Sintaxis"));
-                    contErr++;
-                    break;
                 }
             }
             }
@@ -591,6 +615,8 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         {
             case "=":
                 aux = new Operando(pilaOperando.getFirst().id,pilaOperando.getFirst().tipo);
+                if(dentroFor) 
+                    valorFor=Integer.parseInt(pilaOperando.getFirst().id);
                 break;
             case "+=":
                 aux = new Operando("temp",mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)),"res");
@@ -719,7 +745,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             public Ambito buscarParametro(String tpar, int npar, int ambito){
         Ambito aux = null;
         for(int i=0;i<tablaAmbito.size();i++){
-            if(tablaAmbito.get(i).tparr.equals(tpar) && tablaAmbito.get(i).npar==npar && tablaAmbito.get(i).ambito==ambito){
+            if(tablaAmbito.get(i).tparr==tpar /*.equals(tpar)*/ && tablaAmbito.get(i).npar==npar && tablaAmbito.get(i).ambito==ambito){
                 aux=tablaAmbito.get(i);
             }
         }
@@ -728,7 +754,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     
         public void Dimensiones(int nError){
         contDimension++;
-        if(contDimension<=auxA.getFirst().darr){
+        if(contDimension<=auxA.getFirst().darr){ 
             Operando nuevo = pilaOperando.getFirst();
             if(!Tipo(new String [] {"integer"}, nError)){
                 if(nuevo.clase==null){
@@ -743,9 +769,10 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         else {
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"El arreglo solo tiene " + auxA.getFirst().darr + "dimensiones", "Semantica 2"));
         }
-    }
+    
+        }
         
-            public int calcularTDimension(){
+        public int calcularTDimension(){
         int tAux=0,dAux=0;
         String tArr=auxA.getFirst().tarr;
         String valor="";
@@ -774,6 +801,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     }
     
     public void revisaReturn(int nError){
+        if(!auxA.isEmpty()){
         if(auxA.getFirst()!=null && auxA.getFirst().clase.equals("fun")){
             Tipo(new String [] {auxA.getFirst().tipo},nError);
             esperandoReturn--;
@@ -782,6 +810,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         else{
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Solo las funciones pueden tener return", "Semantica 2"));
         }
+      }
     }        
        
         public void revisadownTo(int nError){
@@ -856,24 +885,32 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     }
                     else
                     {
-                        tablaAmbito.add(new Ambito(tokensito.lexema,clase,pilaAmbito.getFirst()));
+                        Ambito temp = new Ambito(tokensito.lexema,clase,pilaAmbito.getFirst());
+                        tablaAmbito.add(temp);
                         esperoTipo=true;
-                        if(!clase.equals("var"))
-                        {
+                        if(!clase.equals("var")){
                             creador = tokensito.lexema;
+                        if(clase.equals("fun")){
+                          esperandoReturn++;
+                          auxA.addFirst(temp);
                         }
+                       }
                     }
                 }
                 else
                 {
                     boolean declarado=false;
                     String tipo ="";
+                    String clase="";
+                    Ambito aux=null;
                     for(int i:pilaAmbito)
                     {
                         if(busquedaAmbito(tokensito.lexema,i) != null)
                         {
                             declarado=true;
                             tipo = busquedaAmbito(tokensito.lexema,i).tipo;
+                            clase=busquedaAmbito(tokensito.lexema,i).clase;
+                            aux=busquedaAmbito(tokensito.lexema,i);
                             break;
                         }
                     }
@@ -884,6 +921,9 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     else
                     {
                         pilaOperando.addFirst(new Operando(tokensito.lexema,tipo));
+                    }
+                    if(clase.equals("arr")||clase.equals("fun")||clase.equals("proc")){
+                                    auxA.addFirst(aux);
                     }
                 }
                 break;
@@ -936,6 +976,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                             contPar=0;
                             clase="const";
                         }
+                        esperoTipo=false;
                     }
                 }
                 break;
@@ -1138,14 +1179,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     }
     
     
-    
-    private String errorSintaxis(int p) {
-        for (Error e : ListaError) {
-            if(e.id == p)
-                return e.Descrip;
-        }
-        return "";
-    }
+
     
     public void tablas()
     {
