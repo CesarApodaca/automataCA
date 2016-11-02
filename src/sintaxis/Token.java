@@ -18,6 +18,8 @@ public class Token {
         this.linea = linea;
         this.descrip = descrip;
         this.lexema = lexema;
+        //
+                
     }
     
     public Token(int token, String descripcion) {
