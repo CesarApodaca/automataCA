@@ -78,11 +78,13 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     LinkedList<String> pilaTemporal;
     matricesDatos mDatos;
     
-    //semantica 2
+    //semantica 2 
+    //holiwi
     LinkedList<Ambito> auxA;
     int esperandoReturn, valorFor;
     boolean dentroFor;
     String tipoCase, tipoFor;
+    int hola;
     
     
     
