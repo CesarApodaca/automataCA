@@ -53,10 +53,10 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         "-119,-30,827,2022,-28,827,2022,-31", "-120,-30,827,2009,2022,-28,827,2022,-31", "-121,-30,827,2009,2022,-28,827,2022,-31", "-122,-30,827,2022,-31",
         "-123,-30,827,2025,839,-31", "-124,-30,-1,840,2009,2025,841,-31", "-125,827,2007,-126,838,842", "-34,838,843,-35", "-128,827,2013",
         "-129,2017,827,2018,844", "827", "-132,827,2007,-133,838", "-134,827,2011,-135,812,2012,845,-42,838,-136,846,-137", "-133,838,847,-132,827,2007",
-        "1000", "-28,827,2025,839", "1000", "814", "1000", "-28,-1,840,2009,2025,841", "1000", "-127,838", "1000", "-27,838,843",
+        "1000", "-28,827,2025,839", "1000", "2008,814", "1000", "-28,-1,840,2009,2025,841", "1000", "-127,838", "1000", "-27,838,843",
         "1000", "-130,827,2019,838", "-131,827,2020,838", "-28,812,2012,845", "1000", "812,2012,845,-42,838,-136,846",
-        "-127,838,-136", "1000", "-27,827,847", "1000", "819,2009,827,2004"
-    }; 
+        "-127,838,-136", "1000", "-27,838,847", "1000", "819,2009,827,2004"
+    };
 
     //Variables de Ambito
     LinkedList<Integer> pilaAmbito;
@@ -503,11 +503,11 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                 break;
                     case 2021: TotalDimensiones(650);
                                 break;
-                    case 2022: Tipo(new String[]{"cadena"},651);
+                    case 2022: TipoS(new String[]{"cadena"},651);
                                 break;
-                    case 2023: Tipo(new String[]{"char"},652);
+                    case 2023: TipoS(new String[]{"char"},652);
                                 break;
-                    case 2024: Tipo(new String[]{"file"},653);
+                    case 2024: TipoS(new String[]{"file"},653);
                                 break;
                     case 2025: TipoInverso(new String[]{"file","void"},654);
                                 break;
@@ -691,7 +691,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             tipos+=ar[i];
             if(pilaOperando.getFirst().tipo.equals(ar[i])){
                 temp=true;
-                ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba una expresion de tipo " + tipos, "Semantica 3"));
+                ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba una expresion que no sea de tipo " + tipos, "Semantica 3"));
                 contErr++;
             }
         }
@@ -714,6 +714,21 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         return temp;
     }
     
+     public boolean TipoS(String ar [], int nError){
+        boolean temp=true;
+        String tipos = ""; 
+        for(int i=0;i<ar.length;i++){
+            tipos+=ar[i];
+            if(pilaOperando.getFirst().tipo.equals(ar[i])){
+                temp=false;
+            }
+        }
+        if(temp)
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba una expresion de tipo " + tipos, "Semantica 3"));
+        pilaOperando.removeFirst();
+        return temp;
+    }
+     
         public boolean Clase(String ar [], int nError){
         boolean temp=true;
         String clases = ""; 
@@ -766,13 +781,19 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         contPar=0;
     }
         
-            public Ambito buscarParametro(String tpar, int npar, int ambito){
+        public Ambito buscarParametro(String tpar, int npar, int ambito){
         Ambito aux = null;
+        if(!tablaAmbito.isEmpty()){
         for(int i=0;i<tablaAmbito.size();i++){
-            if(tablaAmbito.get(i).tparr==tpar /*.equals(tpar)*/ && tablaAmbito.get(i).npar==npar && tablaAmbito.get(i).ambito==ambito){
+            if(tablaAmbito.get(i).tparr!=null)
+                {
+                    if( tablaAmbito.get(i).tparr.equals(tpar) && tablaAmbito.get(i).npar == npar && tablaAmbito.get(i).ambito==ambito){
+            //if(tablaAmbito.get(i).tparr==tpar /*.equals(tpar)*/ && tablaAmbito.get(i).npar==npar && tablaAmbito.get(i).ambito==ambito){
                 aux=tablaAmbito.get(i);
             }
+          }
         }
+    }
         return aux;
     }
     
@@ -940,14 +961,15 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     }
                     if(!declarado)
                     {
-                        ListaError.add(new Error(641, tokensito.linea, tokensito.lexema, "Variable no Declarada", "Ambito"));
+                        ListaError.add(new Error(655, tokensito.linea, tokensito.lexema, "Variable no Declarada", "Ambito"));
                     }
                     else
                     {
-                        pilaOperando.addFirst(new Operando(tokensito.lexema,tipo));
-                    }
+                        pilaOperando.addFirst(new Operando(tokensito.lexema,tipo,clase));
+                    
                     if(clase.equals("arr")||clase.equals("fun")||clase.equals("proc")){
                                     auxA.addFirst(aux);
+                    }
                     }
                 }
                 break;
@@ -1082,11 +1104,24 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             case -22:// >=
             case -26:// ==
             case -15:// !=
-                
                 if(banderaAmbito)
                 {
                     pilaOperadores.addFirst(tokensito.lexema);
                 }
+                break;
+            case -113://put
+            case -114://get
+            case -115://open
+            case -116://asc
+            case -117: //reset
+            case -118: //val
+            case -119://strcmp
+            case -120://strcpy
+            case -121://strcat
+            case -122://strlen
+            case -123://print
+            case -124://rd
+                pilaOperando.addFirst(new Operando(tokensito.lexema,tipoImplicito(tokensito.token),"funcion"));
                 break;
         }
     }
@@ -1097,7 +1132,6 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         {
             case -2:
                 return "integer";
-                
             case -3://CR
                 return "real";
             case -4://CB
@@ -1125,7 +1159,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             case -119://strcmp
                 return "integer";
             case -120://strcpy
-                return "integer";
+                return "boolean";
             case -121://strcat
                 return "boolean";
             case -122://strlen
