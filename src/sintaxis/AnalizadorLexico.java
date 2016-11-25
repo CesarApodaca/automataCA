@@ -10,6 +10,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -28,6 +31,8 @@ import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
+import jxl.read.biff.BiffException;
+import jxl.write.WriteException;
 
 /**
  *
@@ -63,9 +68,6 @@ Color azul = new Color(hex("0C2838"));
       UIManager.getDefaults().put("TabbedPane.tabsOverlapBorder", true);
       interfaz();
       setVisible(true);
-      
-      
-   
     }
 
 
@@ -133,7 +135,15 @@ Color azul = new Color(hex("0C2838"));
     btnCompilar.setBackground(gris);
     btnCompilar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCompilarActionPerformed(evt);
+                try {
+                    btnCompilarActionPerformed(evt);
+                } catch (WriteException ex) {
+                    Logger.getLogger(AnalizadorLexico.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(AnalizadorLexico.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (BiffException ex) {
+                    Logger.getLogger(AnalizadorLexico.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     
@@ -305,7 +315,7 @@ Color azul = new Color(hex("0C2838"));
             c.abrirArchivo(texto);
         }
     }  
-    private void  btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {     
+    private void  btnCompilarActionPerformed(java.awt.event.ActionEvent evt) throws WriteException, IOException, BiffException {     
         if(!textoCargado.getText().isEmpty())
         {
         listaTokens.setText("");
@@ -318,7 +328,7 @@ Color azul = new Color(hex("0C2838"));
 
     
     
-    public void tablas()
+    public void tablas() throws WriteException, IOException, BiffException
     {
      c.abrirArchivoComp(textoCargado);   
      c.lexico();   

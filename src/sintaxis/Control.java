@@ -5,6 +5,7 @@
  */
 package sintaxis;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +16,11 @@ import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import jxl.Cell;
 import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.write.*;
+import jxl.format.Colour;
+import jxl.format.Pattern;
 
 /**
  *
@@ -43,19 +49,19 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         "1000", "-28,-2,808", "1000", "-103,-1,2002,816,-42,813,800,2003", "-104,-1,2002,816,-42,813,800,2003", "-1,-25,812,-27,811",
         "-1,-25,812,-27,811", "1000", "-37", "-2", "-3", "-36", "-4", "-100", "-101", "-105", "-106", "-107", "-108", "-109",
         "-110", "-111", "-112", "-32,827,2016,815,2021,-33", "-28,827,2016,815", "1000", "-30,817,-31", "813,-42,-1,818", "1000",
-        "-28,-1,818", "-27,813,-42,-1,818", "1000", "-25", "-5", "-40", "-12", "-44", "-8", "812", "-1,821", "-7,-1,2006,821",
-        "-10,-1,2006,821", "-30,827,-31", "-14,-30,827,-31", "837", "2008,814,822", "2010,-30,823,2015,-31", "1000", "819,827,2004", "1000",
+        "-28,-1,818", "-27,813,-42,-1,818", "1000", "-25", "-5", "-40", "-12", "-44", "-8", "812", "-1,821", "-7,-1,2027,821",
+        "-10,-1,2028,821", "-30,827,-31", "-14,-30,827,2029,-31", "837", "2008,814,822", "2010,-30,823,2015,-31", "1000", "819,827,2004", "1000",
         "827,2014,824", "1000", "-28,827,2014,824", "1000", "829,826", "-16,829,2005,826", "1000", "825,828", "-17,825,2005,828", "1000",
         "831,830", "-20,831,2005,830", "-19,831,2005,830", "-26,831,2005,830", "-15,831,2005,830", "-22,831,2005,830", "-23,831,2005,830", "1000",
         "835,832", "-9,835,2005,832", "-6,835,2005,832", "1000", "820,834", "-43,820,2005,834", "1000", "833,836", "-11,833,2005,836",
-        "-38,833,2005,836", "-13,833,2005,836", "1000", "-113,-30,827,2024,-28,827,2025,-31", "-114,-30,827,2024,-28,827,2009,2025,-31",
-        "-115,-30,827,2024,-28,827,2022,-28,827,2023,-31", "-116,-30,827,2006,-31", "-117,-30,827,2024,-31", "-118,-30,827,2023,-31",
-        "-119,-30,827,2022,-28,827,2022,-31", "-120,-30,827,2009,2022,-28,827,2022,-31", "-121,-30,827,2009,2022,-28,827,2022,-31", "-122,-30,827,2022,-31",
-        "-123,-30,827,2025,839,-31", "-124,-30,-1,840,2009,2025,841,-31", "-125,827,2007,-126,838,842", "-34,838,843,-35", "-128,827,2013",
-        "-129,2017,827,2018,844", "827", "-132,827,2007,-133,838", "-134,827,2011,-135,812,2012,845,-42,838,-136,846,-137", "-133,838,847,-132,827,2007",
-        "1000", "-28,827,2025,839", "1000", "2008,814", "1000", "-28,-1,840,2009,2025,841", "1000", "-127,838", "1000", "-27,838,843",
-        "1000", "-130,827,2019,838", "-131,827,2020,838", "-28,812,2012,845", "1000", "812,2012,845,-42,838,-136,846",
-        "-127,838,-136", "1000", "-27,838,847", "1000", "819,2009,827,2004"
+        "-38,833,2005,836", "-13,833,2005,836", "1000", "-113,-30,827,2026,2024,-28,827,2026,2025,-31,2036", "-114,-30,827,2026,2024,-28,827,2026,2009,2025,-31,2036",
+        "-115,-30,827,2026,2024,-28,827,2026,2022,-28,827,2026,2023,-31,2036", "-116,-30,827,2026,2006,-31,2036", "-117,-30,827,2026,2024,-31,2036", "-118,-30,827,2026,2023,-31,2036",
+        "-119,-30,827,2026,2022,-28,827,2026,2022,-31,2036", "-120,-30,827,2026,2009,2022,-28,827,2026,2022,-31,2036", "-121,-30,827,2026,2009,2026,2022,-28,827,2022,-31,2036", "-122,-30,827,2026,2022,-31,2036",
+        "-123,-30,827,2026,2025,839,-31,2036", "-124,-30,-1,2026,840,2009,2025,841,-31,2036", "-125,827,2007,2030,-126,838,842", "-34,838,843,-35", "-128,827,2013",
+        "-129,2017,827,2018,844", "827", "-132,2033,827,2007,2030,-133,838,2034", "-134,827,2011,-135,812,2030,845,-42,838,-136,846,-137", "-133,2033,838,847,-132,827,2007,2035",
+        "1000", "-28,827,2026,2025,839", "1000", "2008,814", "1000", "-28,-1,2026,840,2009,2025,841", "1000", "2031,-127,838,2032", "2032", "-27,838,843",
+        "1000", "-130,827,2019,838,2037", "-131,827,2020,838,2037", "-28,2032,812,2012,2030,845", "1000", "2032,812,2012,2030,845,-42,838,-136,846",
+        "2032,-127,838,-136", "1000", "-27,838,847", "1000", "819,2009,827,2004"
     };
 
     //Variables de Ambito
@@ -83,8 +89,19 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     int esperandoReturn, valorFor;
     boolean dentroFor;
     String tipoCase, tipoFor;
-
     
+    //Cuadruplos
+    int contEntC, contExpC, contBoolC, contCadenaC, contCharC, contEtiqC, contRealC;
+    LinkedList<Ambito> pilaFunProc;
+    String valCase;
+    LinkedList<Cuadruplo> listaCuadra;
+    LinkedList<String> etiquetaSalto;
+    LinkedList<String> etiquetaCiclo;
+    String varFor;
+    String tipoC;
+    String act,v1,v2,res;
+    int contParFun;
+
     
     
     public Control(JTextArea areaTexto)
@@ -117,6 +134,28 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         dentroFor=false;
         tipoCase="";
         tipoFor="";
+        
+        //Cuadruplos
+        contEntC=0;
+        contExpC=0; 
+        contBoolC=0; 
+        contCadenaC=0;
+        contCharC=0; 
+        contEtiqC=0;
+        contRealC=0;
+        pilaFunProc = new LinkedList();
+        listaCuadra = new LinkedList();
+        etiquetaSalto = new LinkedList();
+        etiquetaCiclo = new LinkedList();
+        valCase ="";
+        varFor="";
+        act="";
+        v1="";
+        v2="";
+        res="";
+        tipoC="";
+        contParFun=0;
+        
         
         //cochinero
         this.areaTexto = areaTexto;
@@ -252,7 +291,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         }
     }
     
-    public void lexico()
+    public void lexico() throws WriteException, IOException, BiffException
     {   
         String lexema1 ="";
        int j=0;
@@ -401,6 +440,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         }
         sintaxis();
         tablas();
+        imprimirCuadruplos();
         noToken=true;
         
         
@@ -411,7 +451,56 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     }
     
     
-    public void sintaxis()
+    public void imprimirCuadruplos()throws WriteException, IOException, BiffException 
+    {
+                
+      //   String fileName = "fileeeee.xls";
+      //   Workbook wk= Workbook.getWorkbook(new File(fileName));
+         WritableWorkbook workbook = Workbook.createWorkbook(new File("Cuadruplos.xls"));
+         
+workbook.createSheet("Sheet1", 0);
+WritableSheet sheeet = workbook.getSheet(0);
+
+
+int contFila=0;
+int contColumn=0;
+Label etiquetita;
+for(Cuadruplo cuadrito : listaCuadra)
+{
+ //   celdita = sheeet.getWritableCell(contColumn++,contFila);
+    etiquetita = new Label(contColumn++, contFila, cuadrito.etiqueta);
+    sheeet.addCell(etiquetita);
+    etiquetita = new Label(contColumn++, contFila, cuadrito.actividad);
+    sheeet.addCell(etiquetita);
+    etiquetita = new Label(contColumn++, contFila, cuadrito.valor1);
+    sheeet.addCell(etiquetita);
+    etiquetita = new Label(contColumn++, contFila, cuadrito.valor2);
+    sheeet.addCell(etiquetita);
+    etiquetita = new Label(contColumn++, contFila, cuadrito.resultado);
+    sheeet.addCell(etiquetita);
+    contColumn=0;
+    contFila++;
+    //    etiquetita = new Label(contColumn++, contFila, cuadrito.resultado, getCellFormat(Colour.WHITE, Pattern.GRAY_75));
+
+}
+/*
+WritableCellFormat newFormat = new WritableCellFormat();
+
+newFormat.setBackground(Colour.RED);
+
+cc.setCellFormat(newFormat);
+    Label label3 = new Label(1, 6, "XYZ", getCellFormat(Colour.ORANGE, Pattern.GRAY_75));
+    sheeet.addCell(label3);
+*/
+
+
+
+workbook.write(); // important to use
+workbook.close();
+    }
+    
+    
+    public void sintaxis() 
     {
       //  LinkedList <Token> listaT = (LinkedList<Token>)ListaToken.clone(); 
         ListaToken.addLast(new Token(-50,"$"));
@@ -425,6 +514,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         int renglon;
         int columna;
         int p=0;
+        pilaFunProc.addFirst(new Ambito("MAIN","void","main",0,0,""));
         while(!ListaToken.isEmpty() &&  !produccion.isEmpty())
         {
             
@@ -433,8 +523,11 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 switch(produccion.get(0))
                 {
                     case 2000: banderaAmbito=true;
+                               listaCuadra.add(new Cuadruplo("METODO",pilaFunProc.getFirst().lexema,"","","")); //nuevo
                         break; 
                     case 2001: banderaAmbito=false;
+                              listaCuadra.add(new Cuadruplo("FIN",pilaFunProc.getFirst().lexema,"","","")); //nuevo
+                              pilaFunProc.removeFirst(); //nuevo
                         break;
                     case 2002: contAmbito++;
                                pilaAmbito.addFirst(contAmbito);
@@ -447,7 +540,24 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                if(!pilaOperando.get(1).tipo.equals(aux.tipo) && !aux.tipo.equals("variant"))
                                {
                                    ListaError.add(new Error(646, ListaToken.getFirst().linea, pilaOperando.get(1).id, "Error de Asignacion: No puedes guardar un "+pilaOperando.get(0).tipo+" en un "+pilaOperando.get(1).tipo, "Semantica"));
+                                   contErr++;
                                }
+                               else{
+                                if(dentroFor){
+                                    tipoFor=pilaOperando.get(1).tipo;
+                                }
+                                act = actividadOperacion(pilaOperadores.getFirst());
+                                if(!act.equals("ASIG")){
+                                    v1 = pilaOperando.get(1).id;
+                                    v2 = pilaOperando.getFirst().id;
+                                    res = aux.id;
+                                    listaCuadra.add(new Cuadruplo("",act,v1,v2,res));
+                                }
+                                v1 = aux.id;
+                                res = pilaOperando.get(1).id;
+                                listaCuadra.add(new Cuadruplo("","ASIG",v1,"",res));
+                        }
+                               
                                pilaOperadores.removeAll(pilaOperadores);
                                pilaOperando.removeAll(pilaOperando);
                         break;
@@ -466,6 +576,13 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                    
                                    ListaError.add(new Error(647, ListaToken.getFirst().linea, lexemaL, "Error de ejecucion: No puedes hacer una operacion de "+ pilaOperadores.get(0) + " con " + pilaOperando.get(1).tipo + " y un " + pilaOperando.get(0).tipo , "Semantica"));
                                }
+                               else { //nuevo
+                                    act = actividadOperacion(pilaOperadores.getFirst()); //nuevo
+                                    v1 = pilaOperando.get(1).id; //nuevo
+                                    v2 = pilaOperando.getFirst().id; //nuevo
+                                    res = aux1.id; //nuevo
+                                    listaCuadra.add(new Cuadruplo("",act,v1,v2,res)); //nuevo
+                                }
                                pilaOperadores.removeFirst();
                                pilaOperando.removeFirst();
                                pilaOperando.removeFirst();
@@ -473,17 +590,19 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                         break;
                     case 2006: Tipo(new String [] {"integer"},636);
                                 break;
-                    case 2007: Tipo(new String [] {"boolean"},637);
+                    case 2007: Tipo(new String [] {"boolean"},637,false);
                                 break;
                     case 2008: Clase(new String [] {"arr"}, 638);
+                                listaCuadra.add(new Cuadruplo("","ARR",pilaOperando.getFirst().id,"","")); //nuevo
                                 break;
                     case 2009: Clase(new String [] {"var", "par", "arr"}, 639);
                                 break;
                     case 2010: Clase(new String [] {"fun", "proc"}, 640);
+                                listaCuadra.add(new Cuadruplo("","CALL",pilaOperando.getFirst().id,"","")); // nuevo
                                 break;
                     case 2011: revisaCase(641);
                                 break;
-                    case 2012: Tipo(new String [] {tipoCase},642);
+                    case 2012: Tipo(new String [] {tipoCase},642,false);
                                 break;
                     case 2013: revisaReturn(643);
                                 break;
@@ -511,6 +630,83 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                                 break;
                     case 2025: TipoInverso(new String[]{"file","void"},654);
                                 break;
+                    
+                    case 2026: contParFun++; //nuevo
+                                if(contParFun%2==1){
+                                    if(contParFun!=1){
+                                        listaCuadra.add(new Cuadruplo());
+                                    }
+                                    listaCuadra.getLast().valor1=pilaOperando.getFirst().id;
+                                }
+                                else {
+                                    listaCuadra.getLast().valor2=pilaOperando.getFirst().id;
+                                }
+                                break;
+                    case 2027: if(!Tipo(new String [] {"integer"},655,false)){
+                                    String temp = nuevoTemporal(pilaOperando.getFirst().tipo);
+                                    listaCuadra.add(new Cuadruplo("","INC","1","",pilaOperando.getFirst().id));
+                                    pilaOperando.getFirst().id = temp;
+                                }
+                                break;
+                    case 2028:  if(!Tipo(new String [] {"integer"},656,false)){
+                                    String temp = nuevoTemporal(pilaOperando.getFirst().tipo);
+                                    listaCuadra.add(new Cuadruplo("","DEC","1","",pilaOperando.getFirst().id));
+                                    pilaOperando.getFirst().id = temp;
+                                }
+                                break;
+                    case 2029:  if(!Tipo(new String [] {"boolean"},657,false)){
+                                    String temp = nuevoTemporal(pilaOperando.getFirst().tipo);
+                                    listaCuadra.add(new Cuadruplo("","NEG",pilaOperando.getFirst().id,"",temp));
+                                    pilaOperando.getFirst().id = temp;
+                                }
+                                break;
+                    case 2030:  contEtiqC++; 
+                                String etiqueta = "E"+(contEtiqC);
+                                listaCuadra.add(new Cuadruplo("","JF",pilaOperando.getFirst().id,"",etiqueta));
+                                pilaOperando.removeFirst();
+                                etiquetaSalto.addFirst(etiqueta);
+                                break;
+                    case 2031:  contEtiqC++; 
+                                etiqueta = "E"+(contEtiqC);
+                                listaCuadra.add(new Cuadruplo("","JMP","","",etiqueta));
+                                listaCuadra.add(new Cuadruplo(etiquetaSalto.getFirst(),"","","",""));
+                                etiquetaSalto.removeFirst();
+                                etiquetaSalto.addFirst(etiqueta);
+                                break;
+                    case 2032:  listaCuadra.add(new Cuadruplo(etiquetaSalto.getFirst(),"","","",""));
+                                etiquetaSalto.removeFirst();
+                                break;
+                    case 2033:  contEtiqC++; 
+                                etiqueta = "E"+(contEtiqC);
+                                listaCuadra.add(new Cuadruplo(etiqueta,"","","",""));
+                                etiquetaCiclo.addFirst(etiqueta);
+                                break;
+                    case 2034:  listaCuadra.add(new Cuadruplo("","JMP","","",etiquetaCiclo.getFirst()));
+                                etiquetaCiclo.removeFirst();
+                                listaCuadra.add(new Cuadruplo(etiquetaSalto.getFirst(),"","","",""));
+                                etiquetaSalto.removeFirst();
+                                break;
+                    case 2035:  listaCuadra.add(new Cuadruplo("","JT",pilaOperando.getFirst().id,"",etiquetaCiclo.getFirst()));
+                                etiquetaCiclo.removeFirst();
+                                pilaOperando.removeFirst();
+                                break;
+                    case 2036:  String temp = nuevoTemporal(pilaOperando.getFirst().tipo);
+                                listaCuadra.getLast().resultado = temp;
+                                pilaOperando.getFirst().id = temp;
+                                contParFun=0;
+                                break;
+                    case 2037:  listaCuadra.add(new Cuadruplo("","INC","1","",varFor));
+                                listaCuadra.add(new Cuadruplo("","JMP","","",etiquetaCiclo.getFirst()));
+                                etiquetaCiclo.removeFirst();
+                                listaCuadra.add(new Cuadruplo(etiquetaSalto.getFirst(),"","","",""));
+                                etiquetaSalto.removeFirst();
+                                break;
+                    case 2038:  listaCuadra.add(new Cuadruplo("","DEC","1","",varFor));
+                                listaCuadra.add(new Cuadruplo("","JMP","","",etiquetaCiclo.getFirst()));
+                                etiquetaCiclo.removeFirst();
+                                listaCuadra.add(new Cuadruplo(etiquetaSalto.getFirst(),"","","",""));
+                                etiquetaSalto.removeFirst();
+                                break;
                 }
                 produccion.removeFirst();
             }
@@ -525,8 +721,11 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     //System.out.println(""+xxx);
                     int columnaX = calcularColumnaS(ListaToken.get(0).token);
                     //System.out.println(""+columnaX);
+                   // System.out.println("produccion: " + produccion.getFirst());
                     int filaX = produccion.getFirst()-800;
                    // if(ListaToken.get(0).token )
+                    //System.out.println("columna: "+columnaX);
+                    //System.out.println("fia: " +filaX);
                     p = Integer.parseInt(sheet.getCell(columnaX, filaX).getContents());
                     if(p >= 800)
                     {
@@ -587,7 +786,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                         lin= t.linea;
 
 
-                        System.out.println("linea"+ t.linea +" token" + t.token );
+                       // System.out.println("linea"+ t.linea +" token" + t.token );
                         ListaError.add(new Error(700, lin, t.lexema, "Se esperaba " + convertirProd(produccion.get(0)), "Sintaxis"));
                         contErr++;
                         break;
@@ -596,56 +795,144 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 }
             }
             }
-           System.out.println("\nLista: ");
-            for(Token t:ListaToken){
-                System.out.print(t.lexema+" ");
-            }
-           System.out.println("\nPila: ");
-            for(int t:produccion){
-                System.out.print(t+" ");
-           }
-           // System.out.println("PilaOperando: ");
-        //    for(Operando op:pilaOperando){
-          //      System.out.print(op.id+"-"+op.tipo+" ");
-        //    }
+          // System.out.println("\nLista: ");
+           // for(Token t:ListaToken){
+            //    System.out.print(t.lexema+" ");
+           // }
+          // System.out.println("\nPila: ");
+         //   for(int t:produccion){
+        //        System.out.print(t+" ");
+       //    }
+  //          System.out.println("PilaOperando: ");
+   //         for(Operando op:pilaOperando){
+    //            System.out.print(op.id+"-"+op.tipo+" ");
+     //       }
          //   System.out.println("PilaOperadores: ");
          //   for(String op:pilaOperadores){
            //     System.out.print(op+" ");
        //     }
+            System.out.println("Cuadrplos: ");
+            for(Cuadruplo op:listaCuadra)
+            {
+                System.out.println("Etiqueta "+op.etiqueta);
+                 System.out.println("Actividad "+op.actividad);
+                  System.out.println("Valor 1 "+op.valor1);
+                   System.out.println("Valor 2 "+op.valor2);
+                   System.out.println("RESULTADO"+op.resultado);
+            }
         }
+
     }
     
-
+private static WritableCellFormat getCellFormat(Colour colour, Pattern pattern) throws WriteException {
+    WritableFont cellFont = new WritableFont(WritableFont.TIMES, 16);
+    WritableCellFormat cellFormat = new WritableCellFormat(cellFont);
+    cellFormat.setBackground(colour, pattern);
+    return cellFormat;
+  }
     
 
     public Operando asignacion()
-    {
+    {   
+      
+       tipoC = "";
         Operando aux = null;
         switch(pilaOperadores.getFirst())
         {
             case "=":
+               
                 aux = new Operando(pilaOperando.getFirst().id,pilaOperando.getFirst().tipo);
-                if(dentroFor) 
+                if(dentroFor) {
                     valorFor=Integer.parseInt(pilaOperando.getFirst().id);
+                    varFor=pilaOperando.get(1).id;
+                }
                 break;
             case "+=":
-                aux = new Operando("temp",mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)),"res");
+                  tipoC = mDatos.leerSuma(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "-=":
-                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
+                tipoC = mDatos.leerRestayMult(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "*=":
-                aux = new Operando("temp",mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
+                tipoC = mDatos.leerRestayMult(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "/=":
-                aux = new Operando("temp",mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)),"res");
+               
+                tipoC = mDatos.leerDivision(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "%=":
-                aux = new Operando("temp",mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)),"res");
+                 tipoC = mDatos.leerModulo(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
         }
         return aux;
     }
+    
+    public boolean Tipo(String ar [], int nError, boolean eliminar){
+        boolean temp=true;
+        String tipos = ""; 
+        for(int i=0;i<ar.length;i++){
+            tipos+=ar[i];
+            if(pilaOperando.getFirst().tipo.equals(ar[i])){
+                temp=false;
+            }
+        }
+        if(temp){
+            ListaError.add(new Error(nError,ListaToken.getFirst().linea,pilaOperando.getFirst().id,"Se esperaba una expresion de tipo " + tipos, "Semantica 2"));
+            contErr++;
+        }
+        if(eliminar){
+            pilaOperando.removeFirst();
+        }
+        return temp;
+    }
+    
+    public String nuevoTemporal(String tipo){
+        switch(tipo){
+            case "integer": return "TE"+(++contEntC);
+            case "real": return "TR"+(++contRealC);
+            case "single": return "TEX"+(++contExpC);
+            case "char": return "TCH"+(++contCharC);
+            case "cadena": return "TC"+(++contCadena);
+            case "boolean": return "TB"+(++contBoolC);
+            case "variant": return "TMP";
+            default: return "void";
+        }
+    }
+    
+    public String actividadOperacion(String op){
+        switch(op){
+            case "+=":
+            case "+": return "SUMA";
+            case "-=": 
+            case "-": return "RESTA";
+            case "*=": 
+            case "*": return "MULT";
+            case "^": return "POTE";
+            case "/=": 
+            case "/": return "DIV";
+            case "%=":
+            case "%": return "MODU";
+            case "<": return "MEN";
+            case ">": return "MAY";
+            case "<=": return "MENIGU";
+            case ">=": return "MAYIGU";
+            case "==": return "IGUAL";
+            case "!=": return "DIF";
+            case "&&": return "AND";
+            case "||": return "OR";
+            case "++": return "INC";
+            case "--": return "DEC";
+            case "=": return "ASIG";
+            default: return "NOSE";
+        }
+    }
+
+    
     
     public Operando asignacionOper()
     {  // System.out.println(""+pilaOperadores.getFirst());
@@ -653,20 +940,25 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         switch(pilaOperadores.getFirst())
         {
             case "+":
-                aux = new Operando(pilaOperando.getFirst().id,mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)));
+                 tipoC = mDatos.leerSuma(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerSuma(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "-":
-                aux = new Operando(pilaOperando.getFirst().id,mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)));
+                tipoC = mDatos.leerRestayMult(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "*":
-                aux = new Operando(pilaOperando.getFirst().id,mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)));
+                tipoC = mDatos.leerRestayMult(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerRestayMult(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "^":
             case "/":
-                aux = new Operando(pilaOperando.getFirst().id,mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)));
+                  tipoC = mDatos.leerDivision(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerDivision(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "%":
-                aux = new Operando(pilaOperando.getFirst().id,mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)));
+                  tipoC = mDatos.leerModulo(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerModulo(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "<":
             case "<=":
@@ -674,11 +966,13 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             case ">=":
             case "==":
             case "!=":
-                 aux = new Operando("temp",mDatos.leerComparacion(pilaOperando.get(0),pilaOperando.get(1)));
+                  tipoC = mDatos.leerComparacion(pilaOperando.get(0), pilaOperando.get(1));
+                 aux = new Operando(nuevoTemporal(tipoC),mDatos.leerComparacion(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
             case "&&":
             case "||":
-                aux = new Operando("temp",mDatos.leerAndyOr(pilaOperando.get(0),pilaOperando.get(1)));
+                  tipoC = mDatos.leerAndyOr(pilaOperando.get(0), pilaOperando.get(1));
+                aux = new Operando(nuevoTemporal(tipoC),mDatos.leerAndyOr(pilaOperando.get(0),pilaOperando.get(1)),"res");
                 break;
         }
         return aux;
@@ -703,7 +997,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         boolean temp=true;
         String tipos = ""; 
         for(int i=0;i<ar.length;i++){
-            tipos+=ar[i];
+            tipos+=ar[i] + " ";
             if(pilaOperando.getFirst().tipo.equals(ar[i])){
                 temp=false;
             }
@@ -718,7 +1012,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         boolean temp=true;
         String tipos = ""; 
         for(int i=0;i<ar.length;i++){
-            tipos+=ar[i];
+            tipos+=ar[i] + " ";
             if(pilaOperando.getFirst().tipo.equals(ar[i])){
                 temp=false;
             }
@@ -771,12 +1065,23 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"La funcion o procedimiento solo tiene " + auxA.getFirst().npar + "parametros", "Semantica 2"));
             }
         }
+        if(contPar%2==1){ //nuevo
+            listaCuadra.add(new Cuadruplo("","",pilaOperando.getFirst().id,"",""));
+        }
+        else{
+            listaCuadra.getLast().valor2 = pilaOperando.getFirst().id;
+            
+        }
+        pilaOperando.removeFirst();
     }
         
             public void totalParametros(int nError){
         if(auxA.getFirst().npar!=contPar){
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Se esperaban " + auxA.getFirst().npar + "parametros", "Semantica 2"));
         }
+        String tt = nuevoTemporal(auxA.getFirst().tipo);
+        listaCuadra.getLast().resultado = tt;
+        pilaOperando.getFirst().id=tt;
         auxA.removeFirst();
         contPar=0;
     }
@@ -813,6 +1118,14 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         }
         else {
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"El arreglo solo tiene " + auxA.getFirst().darr + "dimensiones", "Semantica 2"));
+            contErr++;
+        }
+        
+        if(contDimension%2==1){ //nuevo
+            listaCuadra.add(new Cuadruplo("","",pilaOperando.getFirst().id,"",""));
+        }
+        else{
+            listaCuadra.getLast().valor2 = pilaOperando.getFirst().id;
         }
     
         }
@@ -840,6 +1153,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
      
         public void revisaCase(int nError){
         tipoCase=pilaOperando.getFirst().tipo;
+        valCase = pilaOperando.getFirst().id;
         if(Tipo(new String []{"integer","char","cadena"},nError)){
             tipoCase="";
         }
@@ -848,7 +1162,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
     public void revisaReturn(int nError){
         if(!auxA.isEmpty()){
         if(auxA.getFirst()!=null && auxA.getFirst().clase.equals("fun")){
-            Tipo(new String [] {auxA.getFirst().tipo},nError);
+           Tipo(new String [] {auxA.getFirst().tipo},nError);
             esperandoReturn--;
             auxA.removeFirst();
         }
@@ -866,6 +1180,14 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 if(valor>=valorFor){
                     ListaError.add(new Error(nError,ListaToken.getFirst().linea,"downto","El valor debe ser menor que al iniciar el for", "Semantica 2"));
                 }
+                else { //nuevo
+                    String temp = nuevoTemporal("boolean");
+                    listaCuadra.add(new Cuadruplo("","MAYIGU",varFor,valorTo.id,temp));
+                    contEtiqC++;
+                    String etiqueta = "E"+(contEtiqC);
+                    listaCuadra.add(new Cuadruplo("","JF",temp,"",etiqueta));
+                    etiquetaSalto.addFirst(etiqueta);
+                }
             }
         }
         valorFor=-100;
@@ -879,6 +1201,12 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                     pilaOperando.clear();
                 }
             }
+             else {
+                contEtiqC++;
+                String etiqueta = "E"+(contEtiqC);
+                listaCuadra.add(new Cuadruplo(etiqueta,"","","",""));
+                etiquetaCiclo.addFirst(etiqueta);
+            }
         }
         else{
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,"for","Se esperaba una expresión integer al iniciar el for", "Semantica 2"));
@@ -891,6 +1219,9 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         if(auxA.getFirst().darr!=contDimension){
             ListaError.add(new Error(nError,ListaToken.getFirst().linea,auxA.getFirst().lexema,"Se esperaba " + auxA.getFirst().darr + "dimensiones", "Semantica 2"));
         }
+         String t = nuevoTemporal(auxA.getFirst().tipo); // nuevo
+        listaCuadra.getLast().resultado = t;
+        pilaOperando.getFirst().id = t;
         auxA.removeFirst();
         contDimension=0;
     }
@@ -902,6 +1233,14 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                 int valor=Integer.parseInt(valorTo.id);
                 if(valor<=valorFor){
                     ListaError.add(new Error(nError,ListaToken.getFirst().linea,"to","El valor debe ser mayor que al iniciar el for", "Semantica 2"));
+                }
+                 else { //nuevo
+                    String temp = nuevoTemporal("boolean");
+                    listaCuadra.add(new Cuadruplo("","MENIGU",varFor,valorTo.id,temp));
+                    contEtiqC++;
+                    String etiqueta = "E"+(contEtiqC);
+                    listaCuadra.add(new Cuadruplo("","JF",temp,"",etiqueta));
+                    etiquetaSalto.addFirst(etiqueta);
                 }
             }
         }
@@ -933,12 +1272,14 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
                         Ambito temp = new Ambito(tokensito.lexema,clase,pilaAmbito.getFirst());
                         tablaAmbito.add(temp);
                         esperoTipo=true;
-                        if(!clase.equals("var")){
+                        if(!clase.equals("var") && !clase.equals("const")){
                             creador = tokensito.lexema;
                         if(clase.equals("fun")){
                           esperandoReturn++;
-                          auxA.addFirst(temp);
+                         // auxA.addFirst(temp);
+                          
                         }
+                        pilaFunProc.addFirst(temp); //nuevo
                        }
                     }
                 }
@@ -1122,6 +1463,7 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
             case -123://print
             case -124://rd
                 pilaOperando.addFirst(new Operando(tokensito.lexema,tipoImplicito(tokensito.token),"funcion"));
+                listaCuadra.add(new Cuadruplo("",tokensito.lexema,"","","")); //nuevo
                 break;
         }
     }
@@ -1851,12 +2193,36 @@ String [] producciones = {"801,802,803,2000,-34,838,804,-35,2001", "810", "1000"
         tipoFor="";
         pilaTemporal.clear();
         
-         LinkedList<Ambito> auxA;
-    esperandoReturn=0;
-    valorFor=0;
-     dentroFor=false;
-    tipoCase="";
-    tipoFor="";
+        LinkedList<Ambito> auxA;
+        esperandoReturn=0;
+        valorFor=0;
+        dentroFor=false;
+        tipoCase="";
+        tipoFor="";
+    
+    
+    //cuadruplos
+        contEntC=0;
+        contExpC=0; 
+        contBoolC=0; 
+        contCadenaC=0;
+        contCharC=0; 
+        contEtiqC=0;
+        contRealC=0;
+        pilaFunProc = new LinkedList();
+        listaCuadra = new LinkedList();
+        etiquetaSalto = new LinkedList();
+        etiquetaCiclo = new LinkedList();
+        valCase ="";
+        varFor = "";
+        act="";
+        v1="";
+        v2="";
+        res="";
+        tipoC="";
+        contParFun=0;
+        
+        
     }
     
     
